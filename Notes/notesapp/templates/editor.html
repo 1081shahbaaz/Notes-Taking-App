@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    
+    <title>Notes</title>
+</head>
+<body>
+{% if user.is_authenticated %}
+
+    <nav class="navbar is-dark">
+        <div class="navbar-brand">
+            <a href="{% url 'editor' %}" class="navbar-item">Notes</a>
+        </div>
+        <div class="navbar-menu"> 
+            <div class="navbar-end">
+                <a href="{% url 'editor' %}?docid=0" class="navbar-item">New Document</a>
+            </div>
+        </div>
+        <div class="logout" style="
+    height: 52px;
+    display: inline-block;
+    width: 130px;
+    background-color: #f14668;
+"><a style="
+text-decoration: none;
+width: 53px;
+
+color: white;
+position: relative;
+top: 13px;
+left: 39px;
+" href="{% url 'logout' %}">Logout</a></div>
+        <div class="profile ml-1" style="
+    height: 52px;
+    display: inline-block;
+    width: 130px;
+    background-color: white;
+"><a style="
+text-decoration: none;
+width: 53px;
+
+color: #f14668;
+position: relative;
+top: 13px;
+left: 39px;
+" href="{% url 'user-profile' %}">My Profile</a></div>
+    </nav>
+    <h1 style="
+    padding: 17px;
+    font-size: 23px;
+    background-color: #0011;
+    margin-bottom: 15px;
+">Welcome <strong style="color: #f14668;">{{request.user|capfirst}}</strong></h1>
+
+<div class="label" style="
+text-align: center;
+font-size: 30px;
+font-family: monospace;
+">
+    <h3><strong style="
+        background-color: #00d1b2;
+        
+        color: white;
+        box-shadow: black;
+        box-shadow: -6px 6px lightblue;
+    ">My Notes</strong> </h3>
+</div>
+
+    <section class="section">
+        <div class="columns">
+            <div class="column is-2">
+                <!-- Left -->
+                <aside class="menu">
+                    <p class="menu-label">Documents</p>
+                    <ul class="menu-list">
+                        {% for doc in documents %}
+                            <li>
+                                <a href="{% url 'editor' %}?docid={{doc.id}}">{{ doc.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+            </div>
+
+            <div class="column is-5">
+                <form method="post" action="{% url 'editor' %}">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="docid" value="{{ docid }}">
+
+                    <div class="field">
+                        <div class="label">
+                           <p>Title</p> 
+
+                            {% if document %}
+                                <span class="has-text-grey-light">
+                                    <p>Created at: {{document.created_at|date:'m/d Y'}} /
+                                        Modified at: {{document.modified_at|date:'m/d Y'}}</p>
+                                    
+                                </span>
+
+                            {% endif %}
+                        </div>
+
+                        <div class="control">
+                            <input type="text" class="input" name="title" placeholder="Title"{% if document %} value="{{document.title}}" {% endif %}>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Content</div>
+
+                        <div class="control">
+                            <textarea class="textarea" name="content" placeholder="Content">{% if document %}{{document.content}} {% endif %}</textarea>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-primary">Save</button>
+                        </div>
+                        {% if document %}
+                            <div class="control">
+                                <a href="{% url 'delete_document' document.id %}" class="button is-danger">Delete</a>
+                        {% endif %}
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% else %}
+    <h1 style="
+    text-align: center;
+    font-size: 27px;
+    margin-top: 16px;
+">Please login to access the Notes app</h1> <div class="control" style="
+
+display: flex;
+justify-content: center;
+margin-top: 6px;
+">
+        <a href="{% url 'login' %}" class="button is-primary">Login</a>
+{% endif %}
+</body>
+</html>

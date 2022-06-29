@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registeration</title>
+</head>
+<body>
+    <h1>Register Here</h1><hr>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="first_name" id="" placeholder="FirstName" style="
+        margin: 10px 12px;"><br>
+        <input type="text" name="last_name" id="" placeholder="LastName" style="
+        margin: 10px 12px;"><br>
+        <input type="text" name="username" id="" placeholder="UserName"  style="
+        margin: 10px 12px;"><br>
+        <input type="email" name="email" id="" placeholder="Email"  style="
+        margin: 10px 12px;"><br>
+        <input type="password" name="password1" id="" placeholder="Password"  style="
+        margin: 10px 12px;"><br>
+        <input type="password" name="password2" id="" placeholder="Confirm Password"  style="
+        margin: 10px 12px;"><br>
+        <input type="submit" value="Submit" style="
+        margin: 10px 51px;
+        height: 27px;
+        background-color: blue;
+        border: black;
+        color: white;
+        cursor: pointer;
+    "><br>
+    </form>
+    <p style="margin-left: 10px;">Have an account? <a style="text-decoration: none; color:blue" href="/"><b> Log in</b></a></p>
+    <div>
+        {% for message in messages %}
+        <h3 style="
+        color: red;
+        /* width: 201px; */
+        height: 40px;
+        padding: 20px 3px 1px 14px;
+        /* margin-left: 10px; */
+    ">
+            
+            {{message}}
+        </h3>
+        {% endfor %}
+    </div>
+</body>
+</html>
